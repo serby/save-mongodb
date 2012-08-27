@@ -1,0 +1,29 @@
+{ "author": "Paul Serby <paul@serby.net>"
+, "name": "entity-store-mongodb"
+, "description": "A mongodb engine for entity store"
+, "version": "0.0.1"
+, "tags": []
+, "repository":
+  { "type": "git"
+  , "url": "git@github.com:serby/entity-store-mongodb"
+  }
+, "main": "mongodb-engine"
+, "scripts":
+  { "test": "mocha -r should"
+  }
+, "engines":
+  { "node": ">=0.6.0"
+  }
+, "dependencies":
+  { "mongodb": "~1.1"
+  , "lodash": "~0.5"
+  , "async": "~0.1"
+  }
+, "devDependencies":
+  { "mocha": "*"
+  , "should": "*"
+  , "save": "*"
+  , "lodash": "*"
+  , "async": "*"
+  }
+}
