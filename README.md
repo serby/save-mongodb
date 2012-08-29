@@ -1,10 +1,10 @@
-#
+# save-mongodb - mongodb persistence engine for **save***
 
-[![build status](https://secure.travis-ci.org/serby/###.png)](http://travis-ci.org/serby/###)
+[![build status](https://secure.travis-ci.org/serby/save-mongodb.png)](http://travis-ci.org/serby/save-mongodb)
 
 ## Installation
 
-      npm install ###
+      npm install save-engine-mongodb
 
 ## Usage
 

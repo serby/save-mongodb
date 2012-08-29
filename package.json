@@ -1,11 +1,11 @@
 { "author": "Paul Serby <paul@serby.net>"
-, "name": "entity-store-mongodb"
-, "description": "A mongodb engine for entity store"
+, "name": "save-engine-mongodb"
+, "description": "A mongodb engine for save"
 , "version": "0.0.1"
 , "tags": []
 , "repository":
   { "type": "git"
-  , "url": "git@github.com:serby/entity-store-mongodb"
+  , "url": "git@github.com:serby/save-engine-mongodb"
   }
 , "main": "mongodb-engine"
 , "scripts":
