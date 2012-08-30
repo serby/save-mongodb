@@ -1,13 +1,13 @@
 { "author": "Paul Serby <paul@serby.net>"
-, "name": "save-engine-mongodb"
+, "name": "save-mongodb"
 , "description": "A mongodb engine for save"
 , "version": "0.0.1"
 , "tags": []
 , "repository":
   { "type": "git"
-  , "url": "git@github.com:serby/save-engine-mongodb"
+  , "url": "git@github.com:serby/save-mongodb"
   }
-, "main": "mongodb-engine"
+, "main": "lib/mongodb-engine"
 , "scripts":
   { "test": "mocha -r should"
   }

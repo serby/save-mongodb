@@ -4,7 +4,7 @@
 
 ## Installation
 
-      npm install save-engine-mongodb
+      npm install save-mongodb
 
 ## Usage
 
