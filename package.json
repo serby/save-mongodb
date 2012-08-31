@@ -1,8 +1,8 @@
 { "author": "Paul Serby <paul@serby.net>"
 , "name": "save-mongodb"
-, "description": "A mongodb engine for save"
+, "description": "mongodb persistence engine for save"
 , "version": "0.0.2"
-, "tags": []
+, "tags": ["database", "save", "persistence"]
 , "repository":
   { "type": "git"
   , "url": "git@github.com:serby/save-mongodb"
@@ -24,6 +24,5 @@
   , "should": "*"
   , "save": "*"
   , "lodash": "*"
-  , "async": "*"
   }
 }
