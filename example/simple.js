@@ -1,16 +1,3 @@
-# save-mongodb - mongodb persistence engine for **save**
-
-[![build status](https://secure.travis-ci.org/serby/save-mongodb.png)](http://travis-ci.org/serby/save-mongodb)
-
-## Installation
-
-      npm install save-mongodb
-
-## Usage
-
-I won't boar your with waffle. If you want to see how this works look at the tests or this simple example:
-
-```js
 // What you'll need!
 var Db = require('mongodb').Db // npm install mongodb
   , Server = require('mongodb').Server
@@ -41,10 +28,3 @@ db.open(function(error, connection) {
 
   });
 });
-```
-
-## Credits
-[Paul Serby](https://github.com/serby/) follow me on twitter [@serby](http://twitter.com/serby)
-
-## Licence
-Licenced under the [New BSD License](http://opensource.org/licenses/bsd-license.php)
