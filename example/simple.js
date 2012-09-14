@@ -1,30 +1,11 @@
-// What you'll need!
-var Db = require('mongodb').Db // npm install mongodb
-  , Server = require('mongodb').Server
-  , save = require('save') // npm install save
-  , saveMongodb = require('..')
+var save = require('save')
+  , saveMongodb = require('save-mongodb')
+  ;
 
-  // Create a db object to a local mongodb database called SimpleExample.
-  , db = new Db('SimpleExample', new Server('localhost', 27017, {}));
-
-// Open your mongodb database.
-db.open(function(error, connection) {
-
-  // Get a collection. This will create the collection if it doesn't exist.
-  connection.collection('contact', function(error, collection) {
-
-    // Create a save object and pass in a mongodb engine.
-    var contactStore = save('Contact', { engine: saveMongodb(collection) });
-
-    // Then we can create a new object.
-    contactStore.create({ name: 'Paul', email: 'paul@serby.net'}, function(error, contact) {
-
-      // The created 'contact' is returned and has been given an _id
-      console.log(contact);
-
-      // Don't forget to close your database connection!
-      connection.close();
-    });
-
-  });
+serviceLocator.databaseConnections.main.collection('role', function(error, collection) {
+  serviceLocator.saveFactory.role = function() {
+    return save('role', { logger: serviceLocator.logger,
+      engine: saveMongodb(collection)});
+  };
+  done();
 });
