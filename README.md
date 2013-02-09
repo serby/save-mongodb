@@ -19,16 +19,16 @@ var Db = require('mongodb').Db // npm install mongodb
   , db = new Db('SimpleExample', new Server('localhost', 27017, {}));
 
 // Open your mongodb database.
-db.open(function(error, connection) {
+db.open(function (error, connection) {
 
   // Get a collection. This will create the collection if it doesn't exist.
-  connection.collection('contact', function(error, collection) {
+  connection.collection('contact', function (error, collection) {
 
     // Create a save object and pass in a mongodb engine.
     var contactStore = save('Contact', { engine: saveMongodb(collection) });
 
     // Then we can create a new object.
-    contactStore.create({ name: 'Paul', email: 'paul@serby.net'}, function(error, contact) {
+    contactStore.create({ name: 'Paul', email: 'paul@serby.net'}, function (error, contact) {
 
       // The created 'contact' is returned and has been given an _id
       console.log(contact);
