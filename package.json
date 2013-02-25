@@ -9,10 +9,10 @@
   }
 , "main": "lib/mongodb-engine"
 , "scripts":
-  { "test": "mocha -r should"
+  { "test": "./node_modules/mocha/bin/mocha -r should"
   }
 , "engines":
-  { "node": ">=0.6.0"
+  { "node": ">=0.8.0"
   }
 , "dependencies":
   { "mongodb": "~1.2"
