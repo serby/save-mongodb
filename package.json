@@ -1,7 +1,7 @@
 { "author": "Paul Serby <paul@serby.net>"
 , "name": "save-mongodb"
 , "description": "mongodb persistence engine for save"
-, "version": "0.0.7"
+, "version": "0.0.8"
 , "tags": ["database", "save", "persistence"]
 , "repository":
   { "type": "git"
@@ -15,12 +15,12 @@
   { "node": ">=0.8.0"
   }
 , "dependencies":
-  { "mongodb": "~1.2"
+  { "mongodb": ">=1.2.13"
   }
 , "devDependencies":
   { "mocha": "*"
   , "should": "*"
-  , "save": "*"
+  , "save": ">=0.0.14"
   , "lodash": "*"
   }
 }
