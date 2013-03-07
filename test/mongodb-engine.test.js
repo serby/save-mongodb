@@ -3,7 +3,7 @@ var Db = require('mongodb').Db
   , collection
 
 var db = new Db('test', new Server('127.0.0.1', 27017,
-  { safe: true, journal: true }))
+  { safe: true, journal: true, fsync: true,  w: 'majority' }))
 
 function getEngine(callback) {
   collection.remove({}, function () {
