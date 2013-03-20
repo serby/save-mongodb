@@ -16,6 +16,7 @@
   }
 , "dependencies":
   { "mongodb": ">=1.2.13"
+  , "lodash": "*"
   }
 , "devDependencies":
   { "mocha": "*"
