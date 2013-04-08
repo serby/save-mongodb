@@ -2,8 +2,8 @@ var Db = require('mongodb').Db
   , Server = require('mongodb').Server
   , collection
 
-var db = new Db('test', new Server('127.0.0.1', 27017,
-  { safe: true, journal: true, fsync: true,  w: 'majority' }))
+var db = new Db('test', new Server('127.0.0.1', 27017, {}),
+  {fsync: true, w: 1})
 
 function getEngine(callback) {
   collection.remove({}, function () {
