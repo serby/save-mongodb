@@ -5,9 +5,13 @@ var Db = require('mongodb').Db
 var db = new Db('test', new Server('127.0.0.1', 27017, {}),
   {fsync: true, w: 1})
 
-function getEngine(callback) {
+function getEngine(options, callback) {
+  if (callback === undefined) {
+    callback = options
+    options = {}
+  }
   collection.remove({}, function () {
-    callback(undefined, require('../lib/mongodb-engine')(collection))
+    callback(undefined, require('../lib/mongodb-engine')(collection, options))
   })
 }
 
