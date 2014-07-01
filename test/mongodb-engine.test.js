@@ -1,5 +1,6 @@
 var Db = require('mongodb').Db
   , Server = require('mongodb').Server
+  , map = require('async').map
   , collection
   , idProperty = '_id'
 
@@ -32,68 +33,44 @@ describe('mongodb-engine', function () {
   before(connect)
   after(drop)
 
-  it('should find records by id with a $in query', function (done) {
-
-    var _1 = { a: 1 }, _2 = { a: 2 }
-
+  it('should find documents by id with a $in query', function (done) {
     getEngine(function (error, engine) {
-
-      engine.create(_1, function(error, new1) {
-        engine.create(_2, function (error, new2) {
-          var query = {}
-          query[idProperty] = { $in: [ new1[idProperty], new2[idProperty] ] }
-
-          engine.find(query, function (error, entities) {
-            entities.length.should.equal(2)
-            done()
-          })
+      map([{ a: 1 }, { a: 2 }, { a: 3}], engine.create, function (error, documents) {
+        var query = {}
+        query[idProperty] = { $in: [ documents[0][idProperty], documents[1][idProperty] ] }
+        engine.find(query, function (error, queryResults) {
+          queryResults.length.should.equal(2)
+          done()
         })
       })
-
     })
   })
 
-  it('should find records by id with a $nin query', function (done) {
-
-    var _1 = { a: 1 }, _2 = { a: 2 }
-
+  it('should find documents by id with a $nin query', function (done) {
     getEngine(function (error, engine) {
-
-      engine.create(_1, function(error, new1) {
-        engine.create(_2, function (error, new2) {
-          var query = {}
-          query[idProperty] = { $nin: [ new1[idProperty] ] }
-
-          engine.find(query, function (error, entity) {
-            entity.length.should.equal(1)
-            entity[0][idProperty].should.equal(new2[idProperty])
-            done()
-          })
+      map([{ a: 1 }, { a: 2 }], engine.create, function (error, documents) {
+        var query = {}
+        query[idProperty] = { $nin: [ documents[0][idProperty] ] }
+        engine.find(query, function (error, queryResults) {
+          queryResults.length.should.equal(1)
+          queryResults[0][idProperty].should.equal(documents[1][idProperty])
+          done()
         })
       })
-
     })
   })
 
-  it('should find records by id with a $ne query', function (done) {
-
-    var _1 = { a: 1 }, _2 = { a: 2 }
-
+  it('should find documents by id with a $ne query', function (done) {
     getEngine(function (error, engine) {
-
-      engine.create(_1, function(error, new1) {
-        engine.create(_2, function (error, new2) {
-          var query = {}
-          query[idProperty] = { $ne: new1[idProperty] }
-
-          engine.find(query, function (error, entity) {
-            entity.length.should.equal(1)
-            entity[0][idProperty].should.equal(new2[idProperty])
-            done()
-          })
+      map([{ a: 1 }, { a: 2 }], engine.create, function (error, documents) {
+        var query = {}
+        query[idProperty] = { $ne: documents[0][idProperty] }
+        engine.find(query, function (error, queryResults) {
+          queryResults.length.should.equal(1)
+          queryResults[0][idProperty].should.equal(documents[1][idProperty])
+          done()
         })
       })
-
     })
   })
 
