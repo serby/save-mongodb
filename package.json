@@ -1,28 +1,33 @@
-{ "author": "Paul Serby <paul@serby.net>"
-, "name": "save-mongodb"
-, "description": "mongodb persistence engine for save"
-, "version": "0.0.11"
-, "tags": ["database", "save", "persistence"]
-, "repository":
-  { "type": "git"
-  , "url": "git@github.com:serby/save-mongodb"
-  }
-, "main": "lib/mongodb-engine"
-, "scripts":
-  { "test": "./node_modules/mocha/bin/mocha -r should"
-  }
-, "engines":
-  { "node": ">=0.8.0"
-  }
-, "dependencies":
-  { "mongodb": ">=1.2.13"
-  , "lodash": "*"
-  }
-, "devDependencies":
-  { "mocha": "*"
-  , "should": "*"
-  , "save": ">=0.0.14"
-  , "lodash": "*"
-  , "async": "*"
+{
+  "author": "Paul Serby <paul@serby.net>",
+  "name": "save-mongodb",
+  "description": "mongodb persistence engine for save",
+  "version": "0.0.12",
+  "tags": [
+    "database",
+    "save",
+    "persistence"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:serby/save-mongodb"
+  },
+  "main": "lib/mongodb-engine",
+  "scripts": {
+    "test": "./node_modules/mocha/bin/mocha -r should"
+  },
+  "engines": {
+    "node": ">=0.8.0"
+  },
+  "dependencies": {
+    "mongodb": ">=1.2.13",
+    "lodash": "*"
+  },
+  "devDependencies": {
+    "mocha": "*",
+    "should": "*",
+    "save": ">=0.0.14",
+    "lodash": "*",
+    "async": "*"
   }
 }
