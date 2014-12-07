@@ -6,7 +6,7 @@
 
 ## Usage
 
-I won't boar your with waffle. If you want to see how this works look at the tests or this simple example:
+I won't bore your with waffle. If you want to see how this works look at the tests or this simple example:
 
 ```js
 // What you'll need!
