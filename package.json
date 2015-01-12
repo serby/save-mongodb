@@ -2,7 +2,7 @@
   "author": "Paul Serby <paul@serby.net>",
   "name": "save-mongodb",
   "description": "mongodb persistence engine for save",
-  "version": "0.0.12",
+  "version": "1.0.0",
   "tags": [
     "database",
     "save",
