@@ -2,7 +2,7 @@ var Db = require('mongodb').Db // npm install mongodb
   , Server = require('mongodb').Server
   , save = require('save') // npm install save
   , saveMongodb = require('..')
-
+  , es = require('event-stream')
   // Create a db object to a local mongodb database called SimpleExample.
   , db = new Db('test', new Server('127.0.0.1', 27017, {}) , { fsync: true, w: 1 })
 
@@ -16,13 +16,17 @@ db.open(function (error, connection) {
     var contactStore = save('Contact', { engine: saveMongodb(collection) })
 
     // Then we can create a new object.
-    contactStore.create({ name: 'Paul', email: 'paul@serby.net' }, function (error, contact) {
+    contactStore.create({ name: 'Paul', email: 'paul@serby.net' }, function () {
 
-      // The created 'contact' is returned and has been given an _id
-      console.log(contact)
+      contactStore.find({})
+        .pipe(es.map(function(data, cb) {
+          console.log(data)
+          cb()
+        }))
+        .on('end', function() {
+          connection.close()
+        })
 
-      // Don't forget to close your database connection!
-      connection.close()
     })
 
   })
