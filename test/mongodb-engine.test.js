@@ -6,6 +6,8 @@ var Db = require('mongodb').Db
   , db = new Db('test', new Server('127.0.0.1', 27017, {})
   , { fsync: true, w: 1 })
   , assert = require('assert')
+  , Stream = require('stream').Stream
+  , streamAssert = require('stream-assert')
 
 function getEngine(options, callback) {
   if (callback === undefined) {
@@ -18,6 +20,7 @@ function getEngine(options, callback) {
 }
 
 function connect(done) {
+
   db.open(function (error, connection) {
     connection.collection('test', function (error, c) {
       collection = c
@@ -28,7 +31,6 @@ function connect(done) {
 
 function drop() {
   db.dropDatabase()
-  db.close()
 }
 
 require('save/test/engine.tests')(idProperty, getEngine, connect, drop)
@@ -74,6 +76,29 @@ describe('mongodb-engine', function () {
           queryResults.length.should.equal(1)
           queryResults[0][idProperty].should.equal(documents[1][idProperty])
           done()
+        })
+      })
+    })
+  })
+
+  describe('streaming interface of find()', function() {
+    it('should return stream if no callback is provided', function (done) {
+
+      getEngine(function (error, engine) {
+        assert.ok(engine.find({}) instanceof Stream, 'not a instance of Stream')
+        done()
+      })
+    })
+
+    it('should stream result data via ‘objectIdToString’ transformation', function (done) {
+
+      getEngine(function (error, engine) {
+        map([ { a: 1, b: 0 }, { a: 2, b: 0 } ], engine.create, function (error, documents) {
+          var stream = engine.find({ b: 0 })
+          stream
+          .pipe(streamAssert.first(function(data) { assert.deepEqual(data.a, documents[0]) }))
+          .pipe(streamAssert.second(function(data) { assert.deepEqual(data, documents[1]) }))
+          .pipe(streamAssert.end(done))
         })
       })
     })

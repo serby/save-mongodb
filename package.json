@@ -17,17 +17,19 @@
     "test": "./node_modules/mocha/bin/mocha -r should"
   },
   "engines": {
-    "node": ">=0.8.0"
+    "node": ">=0.10.0"
   },
   "dependencies": {
-    "mongodb": ">=1.2.13",
-    "lodash": "*"
+    "lodash": "*",
+    "mongodb": "^1.4.28",
+    "through": "^2.3.6"
   },
   "devDependencies": {
-    "mocha": "*",
-    "should": "*",
-    "save": ">=0.0.14",
+    "async": "*",
     "lodash": "*",
-    "async": "*"
+    "mocha": "*",
+    "save": "^0.0.20",
+    "should": "*",
+    "stream-assert": "^2.0.2"
   }
 }
