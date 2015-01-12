@@ -20,16 +20,15 @@
     "node": ">=0.10.0"
   },
   "dependencies": {
-    "lodash": "*",
+    "lodash": "^2.4.1",
     "mongodb": "^1.4.28",
     "through": "^2.3.6"
   },
   "devDependencies": {
-    "async": "*",
-    "lodash": "*",
-    "mocha": "*",
-    "save": "^0.0.20",
-    "should": "*",
+    "async": "^0.9.0",
+    "mocha": "^2.1.0",
+    "save": "^1.0.0",
+    "should": "^4.5.0",
     "stream-assert": "^2.0.2"
   }
 }
