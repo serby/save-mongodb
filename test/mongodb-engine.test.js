@@ -3,8 +3,7 @@ var Db = require('mongodb').Db
   , map = require('async').map
   , collection
   , idProperty = '_id'
-  , db = new Db('test', new Server('127.0.0.1', 27017, {})
-  , { fsync: true, w: 1 })
+  , db = new Db('test', new Server('127.0.0.1', 27017, {}) , { fsync: true, w: 1 })
   , assert = require('assert')
   , Stream = require('stream').Stream
   , streamAssert = require('stream-assert')
@@ -75,6 +74,19 @@ describe('mongodb-engine', function () {
         engine.find(query, function (error, queryResults) {
           queryResults.length.should.equal(1)
           queryResults[0][idProperty].should.equal(documents[1][idProperty])
+          done()
+        })
+      })
+    })
+  })
+  
+  it('should callback with mongo errors', function (done) {
+    getEngine(function (err, engine) {
+      if (err) return done(err)
+      engine.create({ a: 1 }, function (err, saved) {
+        if (err) return done(err)
+        engine.update({ _id: saved._id }, false, function (err) {
+          err.message.should.not.match(/No object found with '_id' =/)
           done()
         })
       })
