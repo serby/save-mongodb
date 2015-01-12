@@ -36,7 +36,6 @@ require('save/test/engine.tests')(idProperty, getEngine, connect, drop)
 
 describe('mongodb-engine', function () {
 
-  before(connect)
   after(drop)
 
   it('should find documents by id with a $in query', function (done) {
