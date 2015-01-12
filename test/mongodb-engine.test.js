@@ -79,7 +79,7 @@ describe('mongodb-engine', function () {
       })
     })
   })
-  
+
   it('should callback with mongo errors', function (done) {
     getEngine(function (err, engine) {
       if (err) return done(err)
@@ -108,7 +108,7 @@ describe('mongodb-engine', function () {
         map([ { a: 1, b: 0 }, { a: 2, b: 0 } ], engine.create, function (error, documents) {
           var stream = engine.find({ b: 0 })
           stream
-          .pipe(streamAssert.first(function(data) { assert.deepEqual(data.a, documents[0]) }))
+          .pipe(streamAssert.first(function(data) { assert.deepEqual(data, documents[0]) }))
           .pipe(streamAssert.second(function(data) { assert.deepEqual(data, documents[1]) }))
           .pipe(streamAssert.end(done))
         })
