@@ -3,9 +3,9 @@ var Db = require('mongodb').Db
   , map = require('async').map
   , collection
   , idProperty = '_id'
-
-var db = new Db('test', new Server('127.0.0.1', 27017, {}),
-  {fsync: true, w: 1})
+  , db = new Db('test', new Server('127.0.0.1', 27017, {})
+  , { fsync: true, w: 1 })
+  , assert = require('assert')
 
 function getEngine(options, callback) {
   if (callback === undefined) {
@@ -40,7 +40,7 @@ describe('mongodb-engine', function () {
 
   it('should find documents by id with a $in query', function (done) {
     getEngine(function (error, engine) {
-      map([{ a: 1 }, { a: 2 }, { a: 3}], engine.create, function (error, documents) {
+      map([ { a: 1 }, { a: 2 }, { a: 3 } ], engine.create, function (error, documents) {
         var query = {}
         query[idProperty] = { $in: [ documents[0][idProperty], documents[1][idProperty] ] }
         engine.find(query, function (error, queryResults) {
@@ -53,7 +53,7 @@ describe('mongodb-engine', function () {
 
   it('should find documents by id with a $nin query', function (done) {
     getEngine(function (error, engine) {
-      map([{ a: 1 }, { a: 2 }], engine.create, function (error, documents) {
+      map([ { a: 1 }, { a: 2 } ], engine.create, function (error, documents) {
         var query = {}
         query[idProperty] = { $nin: [ documents[0][idProperty] ] }
         engine.find(query, function (error, queryResults) {
@@ -67,7 +67,7 @@ describe('mongodb-engine', function () {
 
   it('should find documents by id with a $ne query', function (done) {
     getEngine(function (error, engine) {
-      map([{ a: 1 }, { a: 2 }], engine.create, function (error, documents) {
+      map([ { a: 1 }, { a: 2 } ], engine.create, function (error, documents) {
         var query = {}
         query[idProperty] = { $ne: documents[0][idProperty] }
         engine.find(query, function (error, queryResults) {
