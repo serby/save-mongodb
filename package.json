@@ -15,6 +15,7 @@
     "type": "git",
     "url": "git@github.com:serby/save-mongodb"
   },
+  "license": "ISC",
   "main": "lib/mongodb-engine",
   "scripts": {
     "test": "mocha -r should"
