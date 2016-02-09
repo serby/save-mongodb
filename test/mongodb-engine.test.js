@@ -3,12 +3,12 @@ var Db = require('mongodb').Db
   , map = require('async').map
   , collection
   , idProperty = '_id'
-  , db = new Db('test', new Server('127.0.0.1', 27017, {}) , { fsync: true, w: 1 })
+  , db = new Db('test', new Server('127.0.0.1', 27017, {}), { j: true, w: 1 })
   , assert = require('assert')
   , Stream = require('stream').Stream
   , streamAssert = require('stream-assert')
 
-function getEngine(options, callback) {
+function getEngine (options, callback) {
   if (callback === undefined) {
     callback = options
     options = {}
@@ -18,7 +18,7 @@ function getEngine(options, callback) {
   })
 }
 
-function connect(done) {
+function connect (done) {
 
   db.open(function (err, connection) {
     if (err) return done(err)
@@ -30,7 +30,7 @@ function connect(done) {
   })
 }
 
-function drop() {
+function drop () {
   db.dropDatabase()
 }
 
@@ -49,7 +49,7 @@ describe('mongodb-engine', function () {
         query[idProperty] = { $in: [ documents[0][idProperty], documents[1][idProperty] ] }
         engine.find(query, function (err, queryResults) {
           if (err) return done(err)
-          queryResults.length.should.equal(2)
+          assert.equal(queryResults.length, 2)
           done()
         })
       })
@@ -65,8 +65,8 @@ describe('mongodb-engine', function () {
         query[idProperty] = { $nin: [ documents[0][idProperty] ] }
         engine.find(query, function (err, queryResults) {
           if (err) return done(err)
-          queryResults.length.should.equal(1)
-          queryResults[0][idProperty].should.equal(documents[1][idProperty])
+          assert.equal(queryResults.length, 1)
+          assert.equal(queryResults[0][idProperty], documents[1][idProperty])
           done()
         })
       })
@@ -82,8 +82,8 @@ describe('mongodb-engine', function () {
         query[idProperty] = { $ne: documents[0][idProperty] }
         engine.find(query, function (err, queryResults) {
           if (err) return done(err)
-          queryResults.length.should.equal(1)
-          queryResults[0][idProperty].should.equal(documents[1][idProperty])
+          assert.equal(queryResults.length, 1)
+          assert.equal(queryResults[0][idProperty], documents[1][idProperty])
           done()
         })
       })
@@ -96,14 +96,15 @@ describe('mongodb-engine', function () {
       engine.create({ a: 1 }, function (err, saved) {
         if (err) return done(err)
         engine.update({ _id: saved._id }, false, function (err) {
-          err.message.should.not.match(/No object found with '_id' =/)
+          assert.equal(/No object found with '_id' =/.test(err.message), false
+            , 'Unexpected error message: ' + err.message)
           done()
         })
       })
     })
   })
 
-  describe('streaming interface of find()', function() {
+  describe('streaming interface of find()', function () {
     it('should return stream if no callback is provided', function (done) {
 
       getEngine(function (err, engine) {
@@ -117,11 +118,11 @@ describe('mongodb-engine', function () {
 
       getEngine(function (err, engine) {
         if (err) return done(err)
-        map([ { a: 1, b: 0 }, { a: 2, b: 0 } ], engine.create, function (err, documents) {
+        map([ { a: 1, b: 0 }, { a: 2, b: 0 } ], engine.create, function (ignoreErr, documents) {
           var stream = engine.find({ b: 0 })
           stream
-          .pipe(streamAssert.first(function(data) { assert.deepEqual(data, documents[0]) }))
-          .pipe(streamAssert.second(function(data) { assert.deepEqual(data, documents[1]) }))
+          .pipe(streamAssert.first(function (data) { assert.deepEqual(data, documents[0]) }))
+          .pipe(streamAssert.second(function (data) { assert.deepEqual(data, documents[1]) }))
           .pipe(streamAssert.end(done))
         })
       })
