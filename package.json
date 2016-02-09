@@ -42,7 +42,7 @@
     "istanbul": "^0.3.19",
     "jsinspect": "^0.7.0",
     "mocha": "^2.3.2",
-    "save": "^2.1.2",
+    "save": "^2.2.1",
     "stream-assert": "^2.0.3"
   }
 }
