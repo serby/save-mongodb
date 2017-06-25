@@ -1,25 +1,26 @@
 var Db = require('mongodb').Db
-  , Server = require('mongodb').Server
-  , map = require('async').map
-  , collection
-  , idProperty = '_id'
-  , db = new Db('test', new Server('127.0.0.1', 27017, {}), { j: true, w: 1 })
-  , assert = require('assert')
-  , Stream = require('stream').Stream
-  , streamAssert = require('stream-assert')
+var Server = require('mongodb').Server
+var map = require('async').map
+
+var idProperty = '_id'
+var db = new Db('test', new Server('127.0.0.1', 27017, {}), { j: true, w: 1 })
+var assert = require('assert')
+var Stream = require('stream').Stream
+var streamAssert = require('stream-assert')
+var engine = require('../lib/mongodb-engine')
+var collection
 
 function getEngine (options, callback) {
   if (callback === undefined) {
     callback = options
     options = {}
   }
-  collection.remove({}, function () {
-    callback(undefined, require('../lib/mongodb-engine')(collection, options))
+  collection.remove({}, { j: true, w: 1 }, function () {
+    callback(null, engine(collection, options))
   })
 }
 
 function connect (done) {
-
   db.open(function (err, connection) {
     if (err) return done(err)
     connection.collection('test', function (err, c) {
@@ -37,7 +38,6 @@ function drop () {
 require('save/test/engine.tests')(idProperty, getEngine, connect, drop)
 
 describe('mongodb-engine', function () {
-
   after(drop)
 
   it('should find documents by id with a $in query', function (done) {
@@ -106,7 +106,6 @@ describe('mongodb-engine', function () {
 
   describe('streaming interface of find()', function () {
     it('should return stream if no callback is provided', function (done) {
-
       getEngine(function (err, engine) {
         if (err) return done(err)
         assert.ok(engine.find({}) instanceof Stream, 'not a instance of Stream')
@@ -115,21 +114,20 @@ describe('mongodb-engine', function () {
     })
 
     it('should stream result data via ‘objectIdToString’ transformation', function (done) {
-
       getEngine(function (err, engine) {
         if (err) return done(err)
-        map([ { a: 1, b: 0 }, { a: 2, b: 0 } ], engine.create, function (ignoreErr, documents) {
-          var stream = engine.find({ b: 0 })
+        map([ { a: 1, b: 0 }, { a: 2, b: 0 } ], engine.create, function (error, documents) {
+          if (error) return done(error)
+          var stream = engine.find({ b: 0 }, { cheese: 12, sort: { a: 1 } })
           stream
-          .pipe(streamAssert.first(function (data) { assert.deepEqual(data, documents[0]) }))
-          .pipe(streamAssert.second(function (data) { assert.deepEqual(data, documents[1]) }))
-          .pipe(streamAssert.end(done))
+            .pipe(streamAssert.first(function (data) { assert.deepEqual(data, documents[0]) }))
+            .pipe(streamAssert.second(function (data) { assert.deepEqual(data, documents[1]) }))
+            .pipe(streamAssert.end(done))
         })
       })
     })
 
     it('should not lose any data if the stream is read asynchronously', function (done) {
-
       getEngine(function (err, engine) {
         if (err) return done(err)
         map([ {}, {}, {}, {}, {} ], engine.create, function (err) {
@@ -142,9 +140,6 @@ describe('mongodb-engine', function () {
           }, 100)
         })
       })
-
     })
-
   })
-
 })

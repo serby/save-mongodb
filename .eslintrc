@@ -1,8 +1,13 @@
 {
-  "extends": "clock",
+  "extends": [ "standard" ],
 
+  "rules": {
+    "object-curly-spacing": [ "error", "always" ],
+    "array-bracket-spacing": [ "error", "always" ]
+  },
   "env": {
-    "es6": false
+    "es6": true,
+    "node": true,
+    "mocha": true
   }
-
 }
