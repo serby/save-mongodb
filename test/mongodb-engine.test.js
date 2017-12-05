@@ -1,6 +1,6 @@
 var Db = require('mongodb').Db
 var Server = require('mongodb').Server
-var map = require('async').map
+var mapSeries = require('async').mapSeries
 
 var idProperty = '_id'
 var db = new Db('test', new Server('127.0.0.1', 27017, {}), { j: true, w: 1 })
@@ -15,8 +15,22 @@ function getEngine (options, callback) {
     callback = options
     options = {}
   }
-  collection.remove({}, { j: true, w: 1 }, function () {
-    callback(null, engine(collection, options))
+  collection.remove({}, { j: true, w: 1 }, function (error) {
+    if (error) {
+      console.error('GetEngine', error)
+      return callback(error)
+    }
+    collection.count({}, function (error, results) {
+      if (error) {
+        console.error('GetEngine', error)
+        return callback(error)
+      }
+      if (results.length > 0) {
+        console.error('GetEngine Check Empty Collection', error)
+        return console.log(results)
+      }
+      callback(null, engine(collection, options))
+    })
   })
 }
 
@@ -31,8 +45,8 @@ function connect (done) {
   })
 }
 
-function drop () {
-  db.dropDatabase()
+function drop (done) {
+  db.dropDatabase(done)
 }
 
 require('save/test/engine.tests')(idProperty, getEngine, connect, drop)
@@ -43,7 +57,7 @@ describe('mongodb-engine', function () {
   it('should find documents by id with a $in query', function (done) {
     getEngine(function (err, engine) {
       if (err) return done(err)
-      map([ { a: 1 }, { a: 2 }, { a: 3 } ], engine.create, function (err, documents) {
+      mapSeries([ { a: 1 }, { a: 2 }, { a: 3 } ], engine.create, function (err, documents) {
         if (err) return done(err)
         var query = {}
         query[idProperty] = { $in: [ documents[0][idProperty], documents[1][idProperty] ] }
@@ -59,7 +73,7 @@ describe('mongodb-engine', function () {
   it('should find documents by id with a $nin query', function (done) {
     getEngine(function (err, engine) {
       if (err) return done(err)
-      map([ { a: 1 }, { a: 2 } ], engine.create, function (err, documents) {
+      mapSeries([ { a: 1 }, { a: 2 } ], engine.create, function (err, documents) {
         if (err) return done(err)
         var query = {}
         query[idProperty] = { $nin: [ documents[0][idProperty] ] }
@@ -76,7 +90,7 @@ describe('mongodb-engine', function () {
   it('should find documents by id with a $ne query', function (done) {
     getEngine(function (err, engine) {
       if (err) return done(err)
-      map([ { a: 1 }, { a: 2 } ], engine.create, function (err, documents) {
+      mapSeries([ { a: 1 }, { a: 2 } ], engine.create, function (err, documents) {
         if (err) return done(err)
         var query = {}
         query[idProperty] = { $ne: documents[0][idProperty] }
@@ -116,7 +130,7 @@ describe('mongodb-engine', function () {
     it('should stream result data via ‘objectIdToString’ transformation', function (done) {
       getEngine(function (err, engine) {
         if (err) return done(err)
-        map([ { a: 1, b: 0 }, { a: 2, b: 0 } ], engine.create, function (error, documents) {
+        mapSeries([ { a: 1, b: 0 }, { a: 2, b: 0 } ], engine.create, function (error, documents) {
           if (error) return done(error)
           var stream = engine.find({ b: 0 }, { cheese: 12, sort: { a: 1 } })
           stream
@@ -130,7 +144,7 @@ describe('mongodb-engine', function () {
     it('should not lose any data if the stream is read asynchronously', function (done) {
       getEngine(function (err, engine) {
         if (err) return done(err)
-        map([ {}, {}, {}, {}, {} ], engine.create, function (err) {
+        mapSeries([ {}, {}, {}, {}, {} ], engine.create, function (err) {
           if (err) return done(err)
           var stream = engine.find({})
           setTimeout(function () {
