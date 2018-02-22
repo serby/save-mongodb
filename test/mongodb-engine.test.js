@@ -1,13 +1,11 @@
-var Db = require('mongodb').Db
-var Server = require('mongodb').Server
-var mapSeries = require('async').mapSeries
-
 var idProperty = '_id'
-var db = new Db('test', new Server('127.0.0.1', 27017, {}), { j: true, w: 1 })
+var MongoClient = require('mongodb').MongoClient
 var assert = require('assert')
 var Stream = require('stream').Stream
+var mapSeries = require('async').mapSeries
 var streamAssert = require('stream-assert')
 var engine = require('../lib/mongodb-engine')
+var connection
 var collection
 
 function getEngine (options, callback) {
@@ -35,7 +33,8 @@ function getEngine (options, callback) {
 }
 
 function connect (done) {
-  db.open(function (err, connection) {
+  MongoClient.connect('mongodb://localhost:27017/test', { 'native_parser': true }, function (err, client) {
+    connection = client.db('test')
     if (err) return done(err)
     connection.collection('test', function (err, c) {
       if (err) return done(err)
@@ -46,7 +45,7 @@ function connect (done) {
 }
 
 function drop (done) {
-  db.dropDatabase(done)
+  connection.dropDatabase(done)
 }
 
 require('save/test/engine.tests')(idProperty, getEngine, connect, drop)
