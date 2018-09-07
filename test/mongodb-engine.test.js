@@ -155,4 +155,43 @@ describe('mongodb-engine', function () {
       })
     })
   })
+
+  describe('castIdProperty()', function () {
+    it('should correctly cast valid ObjectIDs when only valid ids passed', function (done) {
+      getEngine(function (err, engine) {
+        if (err) return done(err)
+        const objects = [ { a: 1 }, { a: 2 }, { a: 3 } ]
+        mapSeries(objects, engine.create, function (err, documents) {
+          if (err) return done(err)
+          var query = {}
+          query[idProperty] = { $in:
+            [ documents[0][idProperty], documents[1][idProperty], documents[2][idProperty] ]
+          }
+          engine.find(query, function (err, queryResults) {
+            if (err) return done(err)
+            assert.equal(queryResults.length, 3)
+            done()
+          })
+        })
+      })
+    })
+    it('should correctly cast only valid ObjectIDs and return others untouched when mix of ids', function (done) {
+      getEngine(function (err, engine) {
+        if (err) return done(err)
+        const objects = [ { a: 1 }, { _id: '34', a: 2 }, { _id: '767', a: 3 }, { a: 4 } ]
+        mapSeries(objects, engine.create, function (err, documents) {
+          if (err) return done(err)
+          var query = {}
+          query[idProperty] = { $in:
+            [ documents[0][idProperty], '34', '767', documents[3][idProperty] ]
+          }
+          engine.find(query, function (err, queryResults) {
+            if (err) return done(err)
+            assert.equal(queryResults.length, 4)
+            done()
+          })
+        })
+      })
+    })
+  })
 })
