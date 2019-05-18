@@ -6,21 +6,21 @@ describe('cast-id-property', function () {
   it('should return original query if idProperty doesnt exist in query', function () {
     var query = { a: 'something' }
     var result = castIdProperty('_id')(query)
-    assert.deepEqual(result, query)
+    assert.deepStrictEqual(result, query)
   })
 
   it('should return cast property if single value provided', function () {
     var objectId = new ObjectID()
     var query = { _id: objectId.toString() }
     var result = castIdProperty('_id')(query)
-    assert.deepEqual(result, { _id: objectId })
+    assert.deepStrictEqual(result, { _id: objectId })
   })
 
   it('should return string if single string value provided', function () {
     var stringA = 'something'
     var query = { _id: { $neq: stringA } }
     var result = castIdProperty('_id')(query)
-    assert.deepEqual(result, query)
+    assert.deepStrictEqual(result, query)
   })
 
   it('should return cast object if object provided', function () {
@@ -28,7 +28,7 @@ describe('cast-id-property', function () {
     var objectB = new ObjectID()
     var query = { _id: { $in: [ objectA.toString(), objectB.toString() ] } }
     var result = castIdProperty('_id')(query)
-    assert.deepEqual(result, { _id: { $in: [ objectA, objectB ] } })
+    assert.deepStrictEqual(result, { _id: { $in: [ objectA, objectB ] } })
   })
 
   it('should cast only object if mixture is provided', function () {
@@ -37,6 +37,6 @@ describe('cast-id-property', function () {
     var stringA = 'something'
     var query = { _id: { $in: [ objectA.toString(), stringA, objectB.toString() ] } }
     var result = castIdProperty('_id')(query)
-    assert.deepEqual(result, { _id: { $in: [ objectA, stringA, objectB ] } })
+    assert.deepStrictEqual(result, { _id: { $in: [ objectA, stringA, objectB ] } })
   })
 })
