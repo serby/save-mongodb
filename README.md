@@ -1,5 +1,7 @@
 # save-mongodb - mongodb persistence engine for **save**
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/serby/save-mongodb.svg)](https://greenkeeper.io/)
+
 ## Installation
 
       npm install save-mongodb
