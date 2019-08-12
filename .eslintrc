@@ -1,10 +1,5 @@
 {
   "extends": [ "standard", "plugin:prettier/recommended", "prettier/standard" ],
-
-  "rules": {
-    "object-curly-spacing": [ "error", "always" ],
-    "array-bracket-spacing": [ "error", "always" ]
-  },
   "env": {
     "es6": true,
     "node": true,
