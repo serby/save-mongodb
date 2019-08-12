@@ -34,7 +34,7 @@ function getEngine (options, callback) {
 }
 
 function connect (done) {
-  MongoClient.connect('mongodb://localhost:27017/test', { 'native_parser': true }, function (err, client) {
+  MongoClient.connect('mongodb://localhost:27017/test', { native_parser: true }, function (err, client) {
     mongoClient = client
     connection = client.db('test')
     if (err) return done(err)

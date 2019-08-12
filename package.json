@@ -21,29 +21,35 @@
     "lint": "eslint -f unix .",
     "inspect": "jsinspect",
     "pretest": "npm run lint && npm run inspect",
-    "test": "istanbul cover ./node_modules/.bin/_mocha test",
-    "posttest": "(istanbul check-coverage --statements 85 --branches 75 --functions 90 --lines 90 && rm -rf coverage) || echo Look at 'coverage/lcov-report/index.html' to find out more"
+    "test": "nyc ./node_modules/.bin/_mocha test",
+    "prettier": "prettier --write '**/*.{js}'",
+    "posttest": "(nyc check-coverage --statements 85 --branches 75 --functions 90 --lines 90 && rm -rf coverage) || nyc report --reporter=html && echo Look at 'coverage/index.html' to find out more"
   },
   "engines": {
     "node": ">=6"
   },
   "dependencies": {
     "event-stream": "^4.0.1",
-    "mongodb": "^3.2.5",
+    "mongodb": "^3.2.7",
+    "nyc": "^14.1.1",
     "through2": "^3.0.1"
   },
   "devDependencies": {
-    "async": "^2.6.2",
-    "eslint": "^5.16.0",
-    "eslint-config-standard": "^12.0.0",
-    "eslint-plugin-import": "^2.17.2",
-    "eslint-plugin-node": "^9.0.1",
-    "eslint-plugin-promise": "^4.1.1",
+    "async": "^3.1.0",
+    "eslint": "^6.1.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-config-prettier-standard": "^3.0.1",
+    "eslint-config-standard": "^13.0.1",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-promise": "^4.2.1",
     "eslint-plugin-standard": "^4.0.0",
     "istanbul": "^0.4.5",
     "jsinspect": "^0.12.6",
-    "mocha": "^6.1.4",
-    "save": "^2.3.3",
+    "mocha": "^6.2.0",
+    "prettier": "^1.18.2",
+    "save": "^2.4.0",
     "should": "^13.2.3",
     "stream-assert": "^2.0.3"
   }
