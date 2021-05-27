@@ -1,0 +1,4 @@
+test/
+example/
+.nyc_output/
+yarn-error.log
