@@ -19,3 +19,6 @@ Icon?
 # nyc
 coverage
 .nyc_output
+
+# yarn
+yarn-error.log
